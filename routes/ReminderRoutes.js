@@ -1,11 +1,8 @@
 const express = require("express");
-
+const requireAuth = require("../utils/requireAuth");
 const router = express.Router();
 
-// it will be /api
-router.get("/", (req, res) => {
-  res.send("Hello World");
-});
+router.use(requireAuth);
 
 router.post("/new-reminder", (req, res) => {
   console.log(req.body);

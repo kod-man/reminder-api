@@ -8,7 +8,7 @@ const { createToken } = require("../utils/commonMethods");
 const router = express.Router();
 
 // it will be /user/...
-router.post("/addUser", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
 
   try {
@@ -39,7 +39,7 @@ router.post("/addUser", async (req, res) => {
 
     const response = await newUser.save();
 
-    res.status(200).json({ message: "User created", response });
+    res.status(200).json({ message: "User succesfully created" });
   } catch (error) {
     res.status(400).json({ message: "Error creating user", error });
   }
