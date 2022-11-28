@@ -9,10 +9,10 @@ const router = express.Router();
 
 // it will be /user/...
 router.post("/register", async (req, res) => {
-  const { username, password, email } = req.body;
+  const { password, email } = req.body;
 
   try {
-    const { errors } = validateUser(req.body, true);
+    const { errors } = validateUser(req.body);
 
     // check if there are any errors
     if (Object.keys(errors).length > 0) {
@@ -32,7 +32,6 @@ router.post("/register", async (req, res) => {
 
     // create a new user
     const newUser = new User({
-      username,
       password: hash,
       email,
     });
@@ -50,7 +49,7 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const { errors } = validateUser(req.body, false);
+    const { errors } = validateUser(req.body);
 
     if (errors.keys?.length > 0) {
       return res.status(400).json(errors);
@@ -77,7 +76,6 @@ router.post("/login", async (req, res) => {
       token,
       user: {
         id: findUser._id,
-        username: findUser.username,
         email: findUser.email,
       },
     };

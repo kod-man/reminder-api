@@ -1,14 +1,8 @@
 const { EMAIL_RGX, PASSWORD_RGX } = require("./Constants");
 
-const validateUser = (user, isRegister) => {
-  const { username, password, email } = user;
+const validateUser = (user) => {
+  const { password, email } = user;
   const errors = {};
-
-  if (isRegister) {
-    if (username.trim() === "") {
-      errors.username = "Username must not be empty";
-    }
-  }
 
   if (email.trim() === "") {
     errors.email = "Email must not be empty";
