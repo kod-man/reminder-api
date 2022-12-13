@@ -15,8 +15,8 @@ const validateUser = (user) => {
   if (password === "") {
     errors.password = "Password must not be empty";
   }
-  if (password.length < 6) {
-    errors.password = "Password must be at least 6 characters";
+  if (password.length < 7) {
+    errors.password = "Password must be at least 7 characters";
   }
 
   if (password.length > 20) {
