@@ -96,5 +96,18 @@ router.get("/me", async (req, res) => {
   }
 });
 
+// update user
+router.put("/username", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      { _id: req.body.id },
+      { $set: { userName: req.body.userName } }
+    );
+    res.status(200).json({ message: "Username updated" });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating user", error });
+  }
+});
+
 // export the router
 module.exports = router;
