@@ -76,6 +76,9 @@ router.post("/login", async (req, res) => {
     const token = await createToken(findUser._id);
     const response = {
       token,
+      user: {
+        id: findUser._id,
+      },
     };
     res.status(200).json({ message: "Login successful", response });
   } catch (error) {
