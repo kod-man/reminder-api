@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 const UserSchema = new Schema(
   {
     password: {
@@ -11,20 +12,12 @@ const UserSchema = new Schema(
       required: true,
       unique: true,
     },
-
-    // relationships with other models
-    reminders: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Reminder",
-      },
-    ],
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // export the model
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 module.exports = User;

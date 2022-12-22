@@ -1,13 +1,17 @@
-const express = require("express");
-const requireAuth = require("../utils/requireAuth");
+const express = require('express');
+// const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
 
-router.use(requireAuth);
+// prevent user from accessing the route if not authenticated
+// router.use(requireAuth);
 
-router.post("/new-reminder", (req, res) => {
+// add reminder if user is authenticated
+
+router.post('/add', (req, res) => {
   console.log(req.body);
   try {
-    res.send("Hello World");
+    // const errors = validateReminder(req.body);
+    res.send('Hello World');
   } catch (error) {
     console.log(error);
   }

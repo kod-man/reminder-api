@@ -1,14 +1,14 @@
-const express = require("express");
-const User = require("../models/UserModel");
-const bcrypt = require("bcryptjs");
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const User = require('../models/UserModel');
 
-const { validateUser } = require("../utils/validation");
-const { createToken } = require("../utils/commonMethods");
+const { validateUser } = require('../utils/validation');
+const { createToken } = require('../utils/commonMethods');
 
 const router = express.Router();
 
 // it will be /user/...
-router.post("/register", async (req, res) => {
+router.post('/register', async (req, res) => {
   const { password, email } = req.body;
 
   try {
@@ -18,12 +18,11 @@ router.post("/register", async (req, res) => {
     if (Object.keys(errors).length > 0) {
       return res.status(400).json(errors);
     }
-    const findUser = await User.findOne({ email: email });
+    const findUser = await User.findOne({ email });
 
     // if user already exists
     if (findUser) {
-      res.status(400).json({ message: "User already exists" });
-      return;
+      res.status(400).json({ message: 'User already exists' });
     }
 
     // hash the password
@@ -36,18 +35,18 @@ router.post("/register", async (req, res) => {
       email,
     });
 
-    const response = await newUser.save();
+    await newUser.save();
 
-    res.status(200).json({ message: "User created succesfully" });
+    return res.status(200).json({ message: 'User created succesfully' });
   } catch (error) {
-    res
+    return res
       .status(400)
-      .json({ message: "Something went wrong.Please try again", error });
+      .json({ message: 'Something went wrong.Please try again', error });
   }
 });
 
 // login route
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -57,20 +56,18 @@ router.post("/login", async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    const findUser = await User.findOne({ email: email });
+    const findUser = await User.findOne({ email });
 
     // if user doesn't exist
     if (!findUser) {
-      res.status(400).json({ message: "Invalid email or password" });
-      return;
+      res.status(400).json({ message: 'Invalid email or password' });
     }
 
     // check if password is correct
     const isPasswordCorrect = bcrypt.compareSync(password, findUser.password);
 
     if (!isPasswordCorrect) {
-      res.status(400).json({ message: "Invalid email or password" });
-      return;
+      res.status(400).json({ message: 'Invalid email or password' });
     }
 
     const token = await createToken(findUser._id);
@@ -80,32 +77,32 @@ router.post("/login", async (req, res) => {
         id: findUser._id,
       },
     };
-    res.status(200).json({ message: "Login successful", response });
+    return res.status(200).json({ message: 'Login successful', response });
   } catch (error) {
-    res.status(400).json({ message: "Error logging in", error });
+    return res.status(400).json({ message: 'Error logging in', error });
   }
 });
 
-router.get("/me", async (req, res) => {
+router.get('/me', async (req, res) => {
   try {
     const user = await User.findById(req.body.id);
-    if (!user) return res.status(400).json({ message: "User not found" });
-    res.status(200).json({ user });
+    if (!user) return res.status(400).json({ message: 'User not found' });
+    return res.status(200).json({ user });
   } catch (error) {
-    res.status(400).json({ message: "Error getting user", error });
+    return res.status(400).json({ message: 'Error getting user', error });
   }
 });
 
 // update user
-router.put("/username", async (req, res) => {
+router.put('/username', async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       { _id: req.body.id },
-      { $set: { userName: req.body.userName } }
+      { $set: { userName: req.body.userName } },
     );
-    res.status(200).json({ message: "Username updated" });
+    res.status(200).json({ message: 'Username updated' });
   } catch (error) {
-    res.status(400).json({ message: "Error updating user", error });
+    res.status(400).json({ message: 'Error updating user', error });
   }
 });
 
