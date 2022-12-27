@@ -26,7 +26,8 @@ const validateUser = (user) => {
 
   // check if user password includes at least one number one uppercase and one lowercase letter
   if (!password.match(PASSWORD_RGX)) {
-    errors.password = 'Password must contain at least one number, one uppercase and one lowercase letter';
+    errors.password =
+      'Password must contain at least one number, one uppercase and one lowercase letter';
   }
   return {
     errors,
@@ -48,8 +49,9 @@ const validateReminder = async (reminder) => {
     errors.date = 'Date must be in the future';
   }
 
-  if (PrioList[priority] === undefined) {
-    errors.priority = 'Priority must be one of the following: Low, Medium, High';
+  if (priority && PrioList[priority] === undefined) {
+    errors.priority =
+      'Priority must be one of the following: Low, Medium, High';
   }
 
   const user = await User.findById(userId || '');
