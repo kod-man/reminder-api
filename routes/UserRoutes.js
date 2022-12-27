@@ -39,9 +39,7 @@ router.post('/register', async (req, res) => {
 
     return res.status(200).json({ message: 'User created succesfully' });
   } catch (error) {
-    return res
-      .status(400)
-      .json({ message: 'Something went wrong.Please try again', error });
+    return res.status(400).json({ message: 'Something went wrong.Please try again', error });
   }
 });
 
@@ -98,8 +96,7 @@ router.put('/username', async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       { _id: req.body.id },
-      { $set: { userName: req.body.userName,
-             imageSrc:req.body.imageSrc } },
+      { $set: { userName: req.body.userName, imageSrc: req.body.imageSrc } },
     );
     res.status(200).json({ message: 'Succesfully updated' });
   } catch (error) {
