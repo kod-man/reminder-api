@@ -98,9 +98,10 @@ router.put('/username', async (req, res) => {
   try {
     await User.findByIdAndUpdate(
       { _id: req.body.id },
-      { $set: { userName: req.body.userName } },
+      { $set: { userName: req.body.userName,
+             imageSrc:req.body.imageSrc } },
     );
-    res.status(200).json({ message: 'Username updated' });
+    res.status(200).json({ message: 'Succesfully updated' });
   } catch (error) {
     res.status(400).json({ message: 'Error updating user', error });
   }
