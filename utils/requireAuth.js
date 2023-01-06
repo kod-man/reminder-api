@@ -1,24 +1,24 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/UserModel");
+const jwt = require('jsonwebtoken');
+const winston = require('winston/lib/winston/config');
+const User = require('../models/UserModel');
 
 const requireAuth = async (req, res, next) => {
   // verify user is authenticated
   const { authorization } = req.headers;
 
-  if (!authorization) {
-    return res.status(401).json({ error: "Authorization token required" });
-  }
-
-  const token = authorization.split(" ")[1];
-
   try {
+    if (!authorization) {
+      return res.status(401).json({ error: 'Authorization token required' });
+    }
+
+    const token = authorization.split(' ')[1];
     const { _id } = jwt.verify(token, process.env.SECRET);
 
-    req.user = await User.findOne({ _id }).select("_id");
+    req.user = await User.findOne({ _id }).select('_id');
     next();
   } catch (error) {
-    console.log(error);
-    res.status(401).json({ error: "Request is not authorized" });
+    winston.error(error);
+    res.status(401).json({ error: 'Request is not authorized' });
   }
 };
 

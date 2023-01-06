@@ -12,5 +12,7 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
+    'arrow-body-style': 'off',
+    'consistent-return': 'off',
   },
 };

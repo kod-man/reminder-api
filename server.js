@@ -1,7 +1,7 @@
 require('dotenv').config();
-//import mongoose
 const mongoose = require('mongoose');
 const cors = require('cors');
+const winston = require('winston');
 
 const express = require('express');
 const ReminderRoutes = require('./routes/ReminderRoutes');
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log('Request received');
+  winston.log('info', 'Request received');
   next();
 });
 
@@ -31,12 +31,12 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log('Connected to DB');
+    winston.log('info', 'Connected to DB');
   })
   .catch((err) => {
-    console.log(err);
+    winston.error(err);
   });
 
 app.listen(PORT, () => {
-  console.log('Server is running on port ' + PORT);
+  winston.log('info', `Server is running on port ${PORT}`);
 });
