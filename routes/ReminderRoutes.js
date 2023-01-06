@@ -10,7 +10,7 @@ const router = express.Router();
 // add reminder if user is authenticated
 
 router.post('/add', async (req, res) => {
-  const { title, priority, description, date, userId } = req.body;
+  const { title, priority, description, date, userId, label } = req.body;
   try {
     const errors = validateReminder(req.body);
     if (errors.keys?.length > 0) {
@@ -23,6 +23,7 @@ router.post('/add', async (req, res) => {
       description,
       date,
       userId,
+      label,
     });
 
     await newReminder.save();
