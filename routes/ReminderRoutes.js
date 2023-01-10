@@ -35,7 +35,7 @@ router.post('/add', async (req, res) => {
 
 // get all reminders for a user
 
-router.get('/all:userId', async (req, res) => {
+router.get('/all/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
     const reminders = await Reminder.find({ userId });
