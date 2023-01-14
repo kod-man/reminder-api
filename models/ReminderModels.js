@@ -1,6 +1,6 @@
 // create a schema for reminder app
-const mongoose = require('mongoose');
-const { PrioList } = require('../utils/constants');
+const mongoose = require("mongoose");
+const { PrioList } = require("../utils/constants");
 
 const { Schema } = mongoose;
 const ReminderSchema = new Schema(
@@ -28,7 +28,7 @@ const ReminderSchema = new Schema(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
   },
@@ -38,5 +38,5 @@ const ReminderSchema = new Schema(
 );
 
 // export the model
-const Reminder = mongoose.model('Reminder', ReminderSchema);
+const Reminder = mongoose.model("Reminder", ReminderSchema);
 module.exports = Reminder;

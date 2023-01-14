@@ -93,11 +93,9 @@ router.get("/me/:userId", async (req, res) => {
 
 // update user
 router.put("/username", async (req, res) => {
+  const { userName, imageSrc, userId } = req.body;
   try {
-    await User.findByIdAndUpdate(
-      { _id: req.body.userId },
-      { $set: { userName: req.body.userName, imageSrc: req.body.imageSrc } },
-    );
+    await User.findByIdAndUpdate({ _id: userId }, { $set: { userName, imageSrc } }, { new: true });
     res.status(200).json({ message: "Succesfully updated" });
   } catch (error) {
     res.status(400).json({ message: "Error updating user", error });

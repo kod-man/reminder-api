@@ -1,11 +1,11 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const cors = require('cors');
-const winston = require('winston');
+require("dotenv").config();
+const mongoose = require("mongoose");
+const cors = require("cors");
+const winston = require("winston");
 
-const express = require('express');
-const ReminderRoutes = require('./routes/ReminderRoutes');
-const UserRoutes = require('./routes/UserRoutes');
+const express = require("express");
+const ReminderRoutes = require("./routes/ReminderRoutes");
+const UserRoutes = require("./routes/UserRoutes");
 
 const app = express();
 
@@ -15,13 +15,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
-  winston.log('info', 'Request received');
+  winston.log("info", "Request received");
   next();
 });
 
 // routes
-app.use('/reminder', ReminderRoutes);
-app.use('/user', UserRoutes);
+app.use("/reminder", ReminderRoutes);
+app.use("/user", UserRoutes);
 const PORT = process.env.PORT || 3000;
 
 // connect to db with mongoose
@@ -31,12 +31,12 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    winston.log('info', 'Connected to DB');
+    winston.log("info", "Connected to DB");
   })
   .catch((err) => {
     winston.error(err);
   });
 
 app.listen(PORT, () => {
-  winston.log('info', `Server is running on port ${PORT}`);
+  winston.log("info", `Server is running on port ${PORT}`);
 });
