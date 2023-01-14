@@ -45,4 +45,14 @@ router.get("/all/:userId", async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Reminder.findByIdAndDelete({ _id: id });
+    return res.status(200).json({ message: "Reminder deleted successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Something went wrong", error });
+  }
+});
+
 module.exports = router;
