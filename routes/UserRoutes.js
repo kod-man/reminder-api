@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
 
     // if user already exists
     if (findUser) {
-      res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     // hash the password
@@ -46,7 +46,7 @@ router.post("/register", async (req, res) => {
 // login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("istek");
   try {
     const { errors } = validateUser(req.body);
 
@@ -58,14 +58,14 @@ router.post("/login", async (req, res) => {
 
     // if user doesn't exist
     if (!findUser) {
-      res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     // check if password is correct
     const isPasswordCorrect = bcrypt.compareSync(password, findUser.password);
 
     if (!isPasswordCorrect) {
-      res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const token = await createToken(findUser._id);
@@ -96,9 +96,9 @@ router.put("/username", async (req, res) => {
   const { userName, imageSrc, userId } = req.body;
   try {
     await User.findByIdAndUpdate({ _id: userId }, { $set: { userName, imageSrc } }, { new: true });
-    res.status(200).json({ message: "Succesfully updated" });
+    return (200).json({ message: "Succesfully updated" });
   } catch (error) {
-    res.status(400).json({ message: "Error updating user", error });
+    return res.status(400).json({ message: "Error updating user", error });
   }
 });
 
