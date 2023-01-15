@@ -46,7 +46,6 @@ router.post("/register", async (req, res) => {
 // login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log("istek");
   try {
     const { errors } = validateUser(req.body);
 
@@ -96,7 +95,7 @@ router.put("/username", async (req, res) => {
   const { userName, imageSrc, userId } = req.body;
   try {
     await User.findByIdAndUpdate({ _id: userId }, { $set: { userName, imageSrc } }, { new: true });
-    return (200).json({ message: "Succesfully updated" });
+    return res.status(200).json({ message: "Succesfully updated" });
   } catch (error) {
     return res.status(400).json({ message: "Error updating user", error });
   }
