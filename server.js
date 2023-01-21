@@ -2,7 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const winston = require("winston");
-
+const helmet = require("helmet");
 const express = require("express");
 const ReminderRoutes = require("./routes/ReminderRoutes");
 const UserRoutes = require("./routes/UserRoutes");
@@ -14,6 +14,8 @@ app.use(cors());
 // middleware
 app.use(express.json());
 
+// prevent XSS attacks
+app.use(helmet());
 app.use((req, res, next) => {
   winston.log("info", "Request received");
   next();
