@@ -55,4 +55,24 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const errors = validateReminder(req.body);
+    if (errors.keys?.length > 0) {
+      return res.status(400).json(errors);
+    }
+
+    await Reminder.findByIdAndUpdate({ _id: id }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({ message: "Reminder updated successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Something went wrong", error });
+  }
+});
+
 module.exports = router;
