@@ -21,3 +21,15 @@ router.post("/add", async (req, res) => {
     return res.status(400).json({ message: "Something went wrong", error });
   }
 });
+
+// get all projects for a user
+
+router.get("/all/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const projects = await Project.find({ userId });
+    return res.status(200).json(projects);
+  } catch (error) {
+    return res.status(400).json({ message: "Something went wrong", error });
+  }
+});
