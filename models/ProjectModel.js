@@ -17,6 +17,10 @@ const ProjectSchema = new Schema(
       ref: "User",
       required: true,
     },
+    isFavorite: {
+      type: Boolean,
+      required: false,
+    },
   },
   {
     timestamps: true,
