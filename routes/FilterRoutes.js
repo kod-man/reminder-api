@@ -30,3 +30,4 @@ router.post("/add", async (req, res) => {
     return res.status(400).json({ message: "Something went wrong", error });
   }
 });
+module.exports = router;

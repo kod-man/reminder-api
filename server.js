@@ -6,6 +6,8 @@ const helmet = require("helmet");
 const express = require("express");
 const ReminderRoutes = require("./routes/ReminderRoutes");
 const UserRoutes = require("./routes/UserRoutes");
+const FilterRoutes = require("./routes/FilterRoutes");
+const ProjectRoutes = require("./routes/ProjectRoutes");
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use((req, res, next) => {
 // routes
 app.use("/reminder", ReminderRoutes);
 app.use("/user", UserRoutes);
+app.use("/filter", FilterRoutes);
+app.use("/project", ProjectRoutes);
 const PORT = process.env.PORT || 3000;
 
 // connect to db with mongoose
