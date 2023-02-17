@@ -7,12 +7,13 @@ const router = express.Router();
 // add project if user is authenticated
 
 router.post("/add", async (req, res) => {
-  const { name, color, userId } = req.body;
+  const { name, color, userId, isFavorite } = req.body;
   try {
     const newProject = new Project({
       name,
       color,
       userId,
+      isFavorite,
     });
 
     await newProject.save();
