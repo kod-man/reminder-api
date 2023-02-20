@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const filters = Filter.find({ userId });
+    const filters = await Filter.find({ userId });
     return res.status(200).json(filters);
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong", error });
