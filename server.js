@@ -7,6 +7,7 @@ const express = require("express");
 const ReminderRoutes = require("./routes/ReminderRoutes");
 const UserRoutes = require("./routes/UserRoutes");
 const FilterRoutes = require("./routes/FilterRoutes");
+const LabelRoutes = require("./routes/LabelRoutes");
 const ProjectRoutes = require("./routes/ProjectRoutes");
 
 const app = express();
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use("/reminder", ReminderRoutes);
 app.use("/user", UserRoutes);
 app.use("/filter", FilterRoutes);
+app.use("/label", LabelRoutes);
 app.use("/project", ProjectRoutes);
 const PORT = process.env.PORT || 3000;
 
