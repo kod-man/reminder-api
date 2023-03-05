@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const labels = await Label.find({ userId });
+    const labels = await Label.find({ userId }).select(["name", "color", "_id", "isFavorite"]);
     return res.status(200).json(labels);
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong", error });

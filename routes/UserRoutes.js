@@ -18,10 +18,11 @@ router.post("/register", async (req, res) => {
     if (Object.keys(errors).length > 0) {
       return res.status(400).json(errors);
     }
-    const findUser = await User.findOne({ email });
+
+    const user = await User.find({ email });
 
     // if user already exists
-    if (findUser) {
+    if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
 
@@ -82,8 +83,15 @@ router.post("/login", async (req, res) => {
 
 router.get("/me/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId);
-    if (!user) return res.status(400).json({ message: "User not found" });
+    const user = await User.findById(req.params.userId).select([
+      "userName",
+      "email",
+      "_id",
+      "imageSrc",
+    ]);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(400).json({ message: "Error getting user", error });

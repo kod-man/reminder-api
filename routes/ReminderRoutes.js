@@ -38,7 +38,7 @@ router.post("/add", async (req, res) => {
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
-    const reminders = await Reminder.find({ userId });
+    const reminders = await Reminder.find({ userId }).select(["title", "description", "_id"]);
     return res.status(200).json(reminders);
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong", error });
