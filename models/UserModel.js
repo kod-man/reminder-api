@@ -14,7 +14,6 @@ const UserSchema = new Schema(
     },
     userName: {
       type: String,
-      unique: true,
     },
     imageSrc: {
       type: String,
