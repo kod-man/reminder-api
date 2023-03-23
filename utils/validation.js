@@ -65,7 +65,33 @@ const validateReminder = async (reminder) => {
   };
 };
 
+const nameValidation = (name) => {
+  const errors = {};
+  if (name.trim() === "") {
+    errors.name = "Name must not be empty";
+  }
+  return {
+    errors,
+  };
+};
+
+const userValidation = async (userId) => {
+  const errors = {};
+  if (!userId) {
+    errors.user = "UserId can not be empty";
+  }
+  const user = await User.findById(userId || "");
+  if (!user) {
+    errors.user = "User does not exist";
+  }
+  return {
+    errors,
+  };
+};
+
 module.exports = {
   validateUser,
   validateReminder,
+  nameValidation,
+  userValidation,
 };

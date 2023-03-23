@@ -1,5 +1,6 @@
 const express = require("express");
 const Filter = require("../models/FilterModel");
+const { nameValidation, userValidation } = require("../utils/validation");
 
 // const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
@@ -16,6 +17,17 @@ router.get("/all/:userId", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   const { name, color, userId, isFavorite } = req.body;
+
+  const userErrors = userValidation(userId);
+  if (userErrors.user) {
+    return res.status(400).json({ message: userErrors.user });
+  }
+
+  const nameErrors = nameValidation(name);
+  if (nameErrors.name) {
+    return res.status(400).json({ message: nameErrors.name });
+  }
+
   try {
     const newFilter = new Filter({
       name,
