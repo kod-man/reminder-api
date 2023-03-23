@@ -65,28 +65,20 @@ const validateReminder = async (reminder) => {
   };
 };
 
-const nameValidation = (name) => {
-  const errors = {};
+const nameValidation = (name, res) => {
   if (name.trim() === "") {
-    errors.name = "Name must not be empty";
+    return res.status(400).json({ message: "Name must not be empty" });
   }
-  return {
-    errors,
-  };
 };
 
-const userValidation = async (userId) => {
-  const errors = {};
+const userValidation = async (userId, res) => {
   if (!userId) {
-    errors.user = "UserId can not be empty";
+    return res.status(400).json({ message: "UserId can not be empty" });
   }
-  const user = await User.findById(userId || "");
+  const user = await User.findById(userId);
   if (!user) {
-    errors.user = "User does not exist";
+    return res.status(400).json({ message: "User does not exist" });
   }
-  return {
-    errors,
-  };
 };
 
 module.exports = {

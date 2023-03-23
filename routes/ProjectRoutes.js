@@ -1,5 +1,6 @@
 const express = require("express");
 const Project = require("../models/ProjectModel");
+const { nameValidation, userValidation } = require("../utils/validation");
 
 // const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
@@ -9,6 +10,10 @@ const router = express.Router();
 router.post("/add", async (req, res) => {
   const { name, color, userId, isFavorite } = req.body;
   try {
+    // validate name and userId
+    nameValidation(name, res);
+    userValidation(userId, res);
+
     const newProject = new Project({
       name,
       color,
@@ -28,6 +33,7 @@ router.post("/add", async (req, res) => {
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
+    userValidation(userId, res);
     const projects = await Project.find({ userId });
     return res.status(200).json(projects);
   } catch (error) {

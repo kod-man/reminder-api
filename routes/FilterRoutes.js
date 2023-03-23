@@ -1,6 +1,5 @@
 const express = require("express");
 const Filter = require("../models/FilterModel");
-const User = require("../models/UserModel");
 const { nameValidation, userValidation } = require("../utils/validation");
 
 // const requireAuth = require('../utils/requireAuth');
@@ -10,10 +9,7 @@ router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findById(userId || "");
-    if (!user) {
-      return res.status(400).json({ message: "User does not exist" });
-    }
+    userValidation(userId, res);
     const filters = await Filter.find({ userId }).select(["name", "color", "_id", "isFavorite"]);
     return res.status(200).json(filters);
   } catch (error) {
@@ -24,15 +20,9 @@ router.get("/all/:userId", async (req, res) => {
 router.post("/add", async (req, res) => {
   const { name, color, userId, isFavorite } = req.body;
 
-  const userErrors = userValidation(userId);
-  if (userErrors.user) {
-    return res.status(400).json({ message: userErrors.user });
-  }
-
-  const nameErrors = nameValidation(name);
-  if (nameErrors.name) {
-    return res.status(400).json({ message: nameErrors.name });
-  }
+  // validate name and userId
+  userValidation(userId, res);
+  nameValidation(name, res);
 
   try {
     const newFilter = new Filter({

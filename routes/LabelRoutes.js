@@ -1,5 +1,6 @@
 const express = require("express");
 const Label = require("../models/LabelModel");
+const { userValidation, nameValidation } = require("../utils/validation");
 
 // const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
@@ -7,6 +8,7 @@ const router = express.Router();
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
+    userValidation(userId, res);
     const labels = await Label.find({ userId }).select(["name", "color", "_id", "isFavorite"]);
     return res.status(200).json(labels);
   } catch (error) {
@@ -16,6 +18,11 @@ router.get("/all/:userId", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   const { name, color, userId, isFavorite } = req.body;
+
+  // validate name and userId
+  userValidation(userId, res);
+  nameValidation(name, res);
+
   try {
     const newLabel = new Label({
       name,

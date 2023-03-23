@@ -1,6 +1,6 @@
 const express = require("express");
 const Reminder = require("../models/ReminderModels");
-const { validateReminder } = require("../utils/validation");
+const { validateReminder, nameValidation, userValidation } = require("../utils/validation");
 // const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
 
@@ -12,6 +12,9 @@ const router = express.Router();
 router.post("/add", async (req, res) => {
   const { title, priority, description, date, userId, label } = req.body;
   try {
+    // validate name and userId
+    nameValidation(title, res);
+    userValidation(userId, res);
     const errors = validateReminder(req.body);
     if (errors.keys?.length > 0) {
       return res.status(400).json(errors);
@@ -38,6 +41,7 @@ router.post("/add", async (req, res) => {
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
+    userValidation(userId, res);
     const reminders = await Reminder.find({ userId }).select(["title", "description", "_id"]);
     return res.status(200).json(reminders);
   } catch (error) {
@@ -59,11 +63,8 @@ router.put("/update/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const errors = validateReminder(req.body);
-    if (errors.keys?.length > 0) {
-      return res.status(400).json(errors);
-    }
-
+    nameValidation(req.body.title, res);
+    userValidation(req.body.userId, res);
     await Reminder.findByIdAndUpdate({ _id: id }, req.body, {
       new: true,
       runValidators: true,

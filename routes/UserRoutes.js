@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/UserModel");
 
-const { validateUser } = require("../utils/validation");
+const { validateUser, userValidation, nameValidation } = require("../utils/validation");
 const { createToken } = require("../utils/commonMethods");
 
 const router = express.Router();
@@ -82,16 +82,10 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/me/:userId", async (req, res) => {
+  const { userId } = req.params;
   try {
-    const user = await User.findById(req.params.userId).select([
-      "userName",
-      "email",
-      "_id",
-      "imageSrc",
-    ]);
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
+    userValidation(userId, res);
+    const user = await User.findById(userId).select(["userName", "email", "_id", "imageSrc"]);
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(400).json({ message: "Error getting user", error });
@@ -102,6 +96,8 @@ router.get("/me/:userId", async (req, res) => {
 router.put("/username", async (req, res) => {
   const { userName, imageSrc, userId } = req.body;
   try {
+    nameValidation(userName, res);
+    userValidation(userId, res);
     await User.findByIdAndUpdate({ _id: userId }, { $set: { userName, imageSrc } }, { new: true });
     return res.status(200).json({ message: "Succesfully updated" });
   } catch (error) {
