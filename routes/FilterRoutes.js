@@ -1,5 +1,6 @@
 const express = require("express");
 const Filter = require("../models/FilterModel");
+const User = require("../models/UserModel");
 const { nameValidation, userValidation } = require("../utils/validation");
 
 // const requireAuth = require('../utils/requireAuth');
@@ -7,7 +8,12 @@ const router = express.Router();
 
 router.get("/all/:userId", async (req, res) => {
   const { userId } = req.params;
+
   try {
+    const user = await User.findById(userId || "");
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist" });
+    }
     const filters = await Filter.find({ userId }).select(["name", "color", "_id", "isFavorite"]);
     return res.status(200).json(filters);
   } catch (error) {
