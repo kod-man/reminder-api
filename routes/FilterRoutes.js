@@ -10,7 +10,12 @@ router.get("/all/:userId", async (req, res) => {
 
   try {
     userValidation(userId, res);
-    const filters = await Filter.find({ userId }).select(["name", "color", "_id", "isFavorite"]);
+    const filters = await Filter.find({ userId }).select([
+      "name",
+      "color",
+      "_id",
+      "isFavorite",
+    ]);
     return res.status(200).json(filters);
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong", error });
@@ -34,6 +39,16 @@ router.post("/add", async (req, res) => {
 
     await newFilter.save();
     return res.status(200).json({ message: "Filter added successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Something went wrong", error });
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Filter.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Filter deleted successfully" });
   } catch (error) {
     return res.status(400).json({ message: "Something went wrong", error });
   }
