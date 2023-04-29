@@ -50,4 +50,24 @@ router.delete("/delete/:id", async (req, res) => {
     return res.status(400).json({ message: "Something went wrong", error });
   }
 });
+
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, color, isFavorite } = req.body;
+
+  // validate name
+  nameValidation(name, res);
+
+  try {
+    const label = await Label.findById(id);
+    label.name = name;
+    label.color = color;
+    label.isFavorite = isFavorite;
+    await label.save();
+    return res.status(200).json({ message: "Label updated successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Something went wrong", error });
+  }
+});
+
 module.exports = router;
