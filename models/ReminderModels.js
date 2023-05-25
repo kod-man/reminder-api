@@ -22,8 +22,9 @@ const ReminderSchema = new Schema(
       required: false,
       default: PrioList.Low,
     },
-    label: {
-      type: String,
+    labelId: {
+      type: Schema.Types.ObjectId,
+      ref: "Label",
       required: false,
     },
     userId: {

@@ -1,5 +1,7 @@
 const express = require("express");
 const Reminder = require("../models/ReminderModels");
+const Label = require("../models/LabelModel");
+const Project = require("../models/ProjectModel");
 const { validateReminder, nameValidation, userValidation } = require("../utils/validation");
 // const requireAuth = require('../utils/requireAuth');
 const router = express.Router();
@@ -10,7 +12,7 @@ const router = express.Router();
 // add reminder if user is authenticated
 
 router.post("/add", async (req, res) => {
-  const { title, priority, description, date, userId, label } = req.body;
+  const { title, priority, description, date, userId, label, project } = req.body;
   try {
     // validate name and userId
     nameValidation(title, res);
@@ -20,13 +22,16 @@ router.post("/add", async (req, res) => {
       return res.status(400).json(errors);
     }
 
+    const labelByName = await Label.findOne({ name: label });
+    const projectByName = await Project.findOne({ name: project });
     const newReminder = new Reminder({
       title,
       priority,
       description,
       date,
       userId,
-      label,
+      labelId: labelByName?._id,
+      projectId: projectByName?._id,
     });
 
     await newReminder.save();
